@@ -7,3 +7,8 @@
   become: true
   roles:
     - redis
+
+- hosts: postgresql
+  become: true
+  roles:
+    - postgresql

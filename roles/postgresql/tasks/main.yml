@@ -1,0 +1,65 @@
+- name: Install PostgreSQL Common
+  ansible.builtin.apt:
+    name: postgresql-common
+
+- name: Install PostgreSQL Apt Repository
+  ansible.builtin.deb822_repository:
+    name: pgdg
+    uris: https://apt.postgresql.org/pub/repos/apt
+    components: main
+    suites: "{{ ansible_facts['distribution_release'] }}-pgdg"
+    signed_by: /usr/share/postgresql-common/pgdg/apt.postgresql.org.asc
+    state: present
+
+- name: Install PostgreSQL 16
+  ansible.builtin.apt:
+    name: postgresql-16
+    update-cache: true
+    state: present
+
+- name: Install psycopg2
+  ansible.builtin.apt:
+    name: python3-psycopg2
+    state: present
+
+- name: Create Paul User
+  community.postgresql.postgresql_user:
+    name: paul
+    password: "{{ postgres_password }}"
+    role_attr_flags: NOSUPERUSER,NOCREATEDB,NOCREATEROLE
+    state: present
+  become_user: postgres
+
+- name: Copy pg_hba.conf file
+  ansible.builtin.copy:
+    src: pg_hba.conf
+    dest: /etc/postgresql/16/main/pg_hba.conf
+  notify: Restart PostgreSQL Server
+
+- name: Create Paul Database
+  community.postgresql.postgresql_db:
+    name: paul
+    owner: paul
+    state: present
+  become_user: postgres
+
+- name: Copy database schema
+  ansible.builtin.copy:
+    src: schema.sql
+    dest: /tmp/schema.sql
+    mode: "0644"
+
+- name: Check if votes table exists
+  community.postgresql.postgresql_query:
+    login_db: paul
+    query: "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'votes')"
+  become_user: postgres
+  register: table_check
+
+- name: Apply schema
+  community.postgresql.postgresql_db:
+    name: paul
+    state: restore
+    target: /tmp/schema.sql
+  become_user: postgres
+  when: not table_check.query_result[0].exists
