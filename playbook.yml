@@ -2,3 +2,8 @@
   become: true
   roles:
     - base
+
+- hosts: redis
+  become: true
+  roles:
+    - redis

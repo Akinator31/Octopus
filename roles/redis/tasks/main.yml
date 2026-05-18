@@ -1,0 +1,12 @@
+- name: Install Redis Server
+  ansible.builtin.apt:
+    name: redis-server
+
+- name: Copy Redis Server Configuration File
+  ansible.builtin.copy:
+    src: redis.conf
+    dest: /etc/redis/redis.conf
+    owner: redis
+    group: redis
+    mode: "0640"
+  notify: Restart Redis Server
