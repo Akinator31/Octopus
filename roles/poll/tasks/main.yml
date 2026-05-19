@@ -13,6 +13,7 @@
   ansible.builtin.copy:
     src: poll.service
     dest: /etc/systemd/system/poll.service
+  notify: Enable and Reload daemon
 
 - name: Create poll environment file
   ansible.builtin.copy:
@@ -20,9 +21,7 @@
       REDIS_HOST={{ redis_host }}
     dest: /opt/poll/poll.env
 
-- name: Enable and Start Poll Service
+- name: Start Poll Service
   ansible.builtin.systemd_service:
     name: poll
-    daemon_reload: true
-    enabled: true
-    state: restarted
+    state: started

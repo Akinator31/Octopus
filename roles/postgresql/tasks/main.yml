@@ -46,7 +46,7 @@
 - name: Copy database schema
   ansible.builtin.copy:
     src: schema.sql
-    dest: /tmp/schema.sql
+    dest: schema.sql
     mode: "0644"
 
 - name: Check if votes table exists
@@ -60,6 +60,6 @@
   community.postgresql.postgresql_db:
     name: paul
     state: restore
-    target: /tmp/schema.sql
+    target: schema.sql
   become_user: postgres
   when: not table_check.query_result[0].exists
