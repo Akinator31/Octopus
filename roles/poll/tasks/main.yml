@@ -1,3 +1,11 @@
+- name: Install Python Packages
+  ansible.builtin.apt:
+    name:
+      - python3-packaging
+      - python3-pip
+      - python3-virtualenv
+    state: present
+
 - name: Upload poll archive
   ansible.builtin.unarchive:
     src: ../../../poll.tar

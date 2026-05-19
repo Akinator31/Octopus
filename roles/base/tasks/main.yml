@@ -11,11 +11,3 @@
   ansible.builtin.apt:
     name: acl
     state: present
-
-- name: Install Python Packages
-  ansible.builtin.apt:
-    name:
-      - python3-packaging
-      - python3-pip
-      - python3-virtualenv
-    state: present
