@@ -15,12 +15,10 @@
   ansible.builtin.apt:
     name: postgresql-16
     update-cache: true
-    state: present
 
 - name: Install psycopg2
   ansible.builtin.apt:
     name: python3-psycopg2
-    state: present
 
 - name: Create Paul User
   community.postgresql.postgresql_user:
