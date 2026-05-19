@@ -1,0 +1,37 @@
+- name: Upload worker archive
+  ansible.builtin.unarchive:
+    src: ../../../worker.tar
+    dest: /opt
+    remote_src: false
+
+- name: Install maven
+  ansible.builtin.apt:
+    name: maven
+
+- name: Install Result Dependencies
+  shell: "mvn dependency:resolve && mvn package"
+  args:
+    chdir: /opt/worker
+    creates: /opt/worker/target/worker-jar-with-dependencies.jar
+
+- name: Create Worker environment file
+  ansible.builtin.copy:
+    content: |
+      POSTGRES_USER={{ postgres_user }}
+      POSTGRES_PASSWORD={{ postgres_password }}
+      POSTGRES_HOST={{ postgres_host }}
+      POSTGRES_PORT={{ postgres_port }}
+      POSTGRES_DB={{ postgres_db }}
+      REDIS_HOST={{ redis_host }}
+    dest: /opt/worker/worker.env
+
+- name: Copy Worker Service file
+  ansible.builtin.copy:
+    src: worker.service
+    dest: /etc/systemd/system/worker.service
+  notify: Enable and Reload daemon
+
+- name: Start Result Service
+  ansible.builtin.systemd_service:
+    name: worker
+    state: started

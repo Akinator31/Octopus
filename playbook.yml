@@ -22,3 +22,8 @@
   become: true
   roles:
     - result
+
+- hosts: worker
+  become: true
+  roles:
+    - worker

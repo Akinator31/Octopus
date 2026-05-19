@@ -1,0 +1,11 @@
+[Unit]
+Description=Worker Application
+
+[Service]
+WorkingDirectory=/opt/worker
+EnvironmentFile=/opt/worker/worker.env
+ExecStart=java -jar /opt/worker/target/worker-jar-with-dependencies.jar
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
