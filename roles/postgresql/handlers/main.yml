@@ -2,3 +2,10 @@
   ansible.builtin.systemd:
     name: postgresql
     state: restarted
+
+- name: Apply schema
+  community.postgresql.postgresql_db:
+    name: paul
+    state: restore
+    target: /tmp/schema.sql
+  become_user: postgres

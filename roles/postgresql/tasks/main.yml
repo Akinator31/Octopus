@@ -36,6 +36,12 @@
     dest: /etc/postgresql/16/main/pg_hba.conf
   notify: Restart PostgreSQL Server
 
+- name: Copy PostgreSQL configuration file
+  ansible.builtin.copy:
+    src: postgresql.conf
+    dest: /etc/postgresql/16/main/postgresql.conf
+  notify: Restart PostgreSQL Server
+
 - name: Create Paul Database
   community.postgresql.postgresql_db:
     name: paul
@@ -46,20 +52,6 @@
 - name: Copy database schema
   ansible.builtin.copy:
     src: schema.sql
-    dest: schema.sql
+    dest: /tmp/schema.sql
     mode: "0644"
-
-- name: Check if votes table exists
-  community.postgresql.postgresql_query:
-    login_db: paul
-    query: "SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'votes')"
-  become_user: postgres
-  register: table_check
-
-- name: Apply schema
-  community.postgresql.postgresql_db:
-    name: paul
-    state: restore
-    target: schema.sql
-  become_user: postgres
-  when: not table_check.query_result[0].exists
+  notify: Apply schema
