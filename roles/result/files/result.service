@@ -1,0 +1,11 @@
+[Unit]
+Description=Result Application
+
+[Service]
+WorkingDirectory=/opt/result
+EnvironmentFile=/opt/result/result.env
+ExecStart=node /opt/result/server.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

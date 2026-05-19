@@ -17,3 +17,8 @@
   become: true
   roles:
     - poll
+
+- hosts: result
+  become: true
+  roles:
+    - result

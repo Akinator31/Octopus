@@ -1,2 +1,9 @@
+# POSTGRES
+postgres_db: "paul"
+postgres_host: "192.168.122.95"
+postgres_user: "paul"
 postgres_password: "{{ vault_postgres_password }}"
+postgres_port: 5432
+
+# REDIS
 redis_host: "192.168.122.63"

@@ -1,0 +1,36 @@
+- name: Install Node JS & npm
+  ansible.builtin.apt:
+    name:
+      - nodejs
+      - npm
+
+- name: Upload result archive
+  ansible.builtin.unarchive:
+    src: ../../../result.tar
+    dest: /opt
+    remote_src: false
+
+- name: Install Result Packages
+  community.general.npm:
+    path: /opt/result
+
+- name: Create Result environment file
+  ansible.builtin.copy:
+    content: |
+      POSTGRES_USER={{ postgres_user }}
+      POSTGRES_PASSWORD={{ postgres_password }}
+      POSTGRES_HOST={{ postgres_host }}
+      POSTGRES_PORT={{ postgres_port }}
+      POSTGRES_DB={{ postgres_db }}
+    dest: /opt/result/result.env
+
+- name: Copy Result Service file
+  ansible.builtin.copy:
+    src: result.service
+    dest: /etc/systemd/system/result.service
+  notify: Enable and Reload daemon
+
+- name: Start Result Service
+  ansible.builtin.systemd_service:
+    name: result
+    state: started
