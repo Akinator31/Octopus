@@ -1,0 +1,10 @@
+[Unit]
+Description=Poll Application
+
+[Service]
+EnvironmentFile=/opt/poll/poll.env
+ExecStart=/opt/poll/venv/bin/python /opt/poll/app.py
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

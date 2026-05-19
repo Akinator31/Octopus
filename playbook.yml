@@ -12,3 +12,8 @@
   become: true
   roles:
     - postgresql
+
+- hosts: poll
+  become: true
+  roles:
+    - poll

@@ -1,0 +1,28 @@
+- name: Upload poll archive
+  ansible.builtin.unarchive:
+    src: ../../../poll.tar
+    dest: /opt
+    remote_src: false
+
+- name: Install Poll Python Requirements
+  ansible.builtin.pip:
+    requirements: /opt/poll/requirements.txt
+    virtualenv: /opt/poll/venv
+
+- name: Copy Poll Service file
+  ansible.builtin.copy:
+    src: poll.service
+    dest: /etc/systemd/system/poll.service
+
+- name: Create poll environment file
+  ansible.builtin.copy:
+    content: |
+      REDIS_HOST={{ redis_host }}
+    dest: /opt/poll/poll.env
+
+- name: Enable and Start Poll Service
+  ansible.builtin.systemd_service:
+    name: poll
+    daemon_reload: true
+    enabled: true
+    state: restarted
