@@ -1,1 +1,2 @@
 postgres_password: "{{ vault_postgres_password }}"
+redis_host: "192.168.122.63"
