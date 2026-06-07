@@ -3,10 +3,6 @@
     update_cache: true
     upgrade: "yes"
 
-- name: Install btop
-  ansible.builtin.apt:
-    name: btop
-
 - name: Install acl
   ansible.builtin.apt:
     name: acl
