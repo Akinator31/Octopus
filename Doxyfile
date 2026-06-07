@@ -1,0 +1,46 @@
+# Doxyfile for Octopus Project
+
+# Project Settings
+PROJECT_NAME           = "Octopus"
+PROJECT_BRIEF          = "Ansible-based deployment of a multi-service voting app"
+OUTPUT_DIRECTORY       = .
+CREATE_SUBDIRS         = NO
+OUTPUT_LANGUAGE        = English
+
+# Build Settings
+EXTRACT_ALL            = YES
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+
+# Input Settings
+# We use README.md and the new project_overview.md as input
+INPUT                  = README.md docs/project_overview.md
+USE_MDFILE_AS_MAINPAGE = README.md
+RECURSIVE              = NO
+
+# HTML Settings
+HTML_OUTPUT            = html
+HTML_FILE_EXTENSION    = .html
+
+# Doxygen Awesome Theme Integration
+# We point to the files in the submodule
+HTML_EXTRA_STYLESHEET  = docs/doxygen-awesome/doxygen-awesome.css \
+                         docs/doxygen-awesome/doxygen-awesome-sidebar-only.css
+
+HTML_EXTRA_FILES       = docs/doxygen-awesome/doxygen-awesome-darkmode-toggle.js \
+                         docs/doxygen-awesome/doxygen-awesome-fragment-copy-button.js \
+                         docs/doxygen-awesome/doxygen-awesome-interactive-toc.js
+
+# Markdown Support
+MARKDOWN_SUPPORT       = YES
+AUTOLINK_SUPPORT       = YES
+TOC_INCLUDE_HEADINGS   = 3
+
+# Appearance
+GENERATE_TREEVIEW      = YES
+DISABLE_INDEX          = NO
+FULL_SIDEBAR           = NO
+HTML_COLORSTYLE        = LIGHT
+HTML_COLORSTYLE_HUE    = 209
+HTML_COLORSTYLE_SAT    = 255
+HTML_COLORSTYLE_GAMMA  = 113
